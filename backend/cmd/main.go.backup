@@ -148,26 +148,6 @@ func main() {
 	exerciseHandler := handlers.NewExerciseHandler(exerciseService, submissionService)
 	submissionHandler := handlers.NewSubmissionHandler(submissionService)
 	progressHandler := handlers.NewProgressHandler(progressService)
-	
-	// Initialize Phase 3 & 4 handlers (simplified - full initialization TODO)
-	// Grading
-	gradingRepo := repository.NewGradingRepository(dbPool)
-	gradingService := services.NewGradingService(gradingRepo, submissionRepo, exerciseRepo)
-	gradingHandler := handlers.NewGradingHandler(gradingService, submissionService, exerciseRepo)
-	
-	// Progress Tracking
-	courseRepoForProgress := courseRepo
-	progressTrackingService := services.NewProgressTrackingService(progressRepo, enrollmentRepo, lessonRepo, courseRepoForProgress)
-	progressTrackingHandler := handlers.NewProgressTrackingHandler(progressTrackingService)
-	
-	// Achievement System (simplified)
-	// achievementService := services.NewAchievementService(...) // TODO: Full initialization
-	// achievementHandler := handlers.NewAchievementHandler(achievementService)
-	
-	// Discussion System (simplified)
-	discussionRepo := repository.NewDiscussionRepository(dbPool)
-	discussionService := services.NewDiscussionService(discussionRepo, courseRepo, userRepo)
-	discussionHandler := handlers.NewDiscussionHandler(discussionService)
 
 	// Set up Gin router
 	router := gin.Default()
@@ -283,33 +263,8 @@ func main() {
 				submissions.POST("/:submission_id/grade", middleware.RequireRole("instructor", "admin"), submissionHandler.GradeSubmission)
 			}
 
-			// Discussion routes
-			discussions := protected.Group("/discussions")
-			{
-				discussions.GET("", discussionHandler.ListDiscussions)
-				discussions.POST("", discussionHandler.CreateDiscussion)
-				discussions.GET("/:discussion_id", discussionHandler.GetDiscussion)
-				discussions.PUT("/:discussion_id", discussionHandler.UpdateDiscussion)
-				discussions.DELETE("/:discussion_id", discussionHandler.DeleteDiscussion)
-				discussions.POST("/:discussion_id/like", discussionHandler.ToggleLike)
-				discussions.POST("/:discussion_id/favorite", discussionHandler.ToggleFavorite)
-			}
-
-			// Grading routes
-			grading := protected.Group("/grading")
-			{
-				grading.POST("/auto", gradingHandler.AutoGradeSubmission)
-				grading.GET("/history", gradingHandler.GetGradingHistory)
-			}
-
-			// Progress tracking routes
-			progress := protected.Group("/progress")
-			{
-				progress.GET("/heatmap", progressTrackingHandler.GetLearningHeatmap)
-				progress.GET("/daily-stats", progressTrackingHandler.GetDailyStats)
-				progress.GET("/weekly-report", progressTrackingHandler.GetWeeklyReport)
-				progress.GET("/monthly-report", progressTrackingHandler.GetMonthlyReport)
-			}
+			// Discussion routes (placeholder)
+			_ = protected.Group("/discussions") // TODO: Implement discussion handlers
 
 			// Notification routes
 			notifications := protected.Group("/notifications")

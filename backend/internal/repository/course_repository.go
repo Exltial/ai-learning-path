@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"ai-learning-platform/internal/models"
@@ -84,12 +85,12 @@ func (r *CourseRepository) List(ctx context.Context, category, difficulty string
 	argIndex := 1
 
 	if category != "" {
-		countQuery += ` AND category = $` + string(rune(argIndex))
+		countQuery += fmt.Sprintf(` AND category = $%d`, argIndex)
 		args = append(args, category)
 		argIndex++
 	}
 	if difficulty != "" {
-		countQuery += ` AND difficulty_level = $` + string(rune(argIndex))
+		countQuery += fmt.Sprintf(` AND difficulty_level = $%d`, argIndex)
 		args = append(args, difficulty)
 		argIndex++
 	}
@@ -109,17 +110,17 @@ func (r *CourseRepository) List(ctx context.Context, category, difficulty string
 	`
 	
 	if category != "" {
-		query += ` AND category = $` + string(rune(argIndex))
+		query += fmt.Sprintf(` AND category = $%d`, argIndex)
 		args = append(args, category)
 		argIndex++
 	}
 	if difficulty != "" {
-		query += ` AND difficulty_level = $` + string(rune(argIndex))
+		query += fmt.Sprintf(` AND difficulty_level = $%d`, argIndex)
 		args = append(args, difficulty)
 		argIndex++
 	}
 
-	query += ` ORDER BY created_at DESC LIMIT $` + string(rune(argIndex)) + ` OFFSET $` + string(rune(argIndex+1))
+	query += fmt.Sprintf(` ORDER BY created_at DESC LIMIT $%d OFFSET $%d`, argIndex, argIndex+1)
 	args = append(args, limit, offset)
 
 	rows, err := r.db.Query(ctx, query, args...)

@@ -186,6 +186,163 @@ class ApiService {
       return { success: false, error: '网络错误，请稍后重试' }
     }
   }
+
+  // Discussion APIs
+  async getDiscussions(courseId: string, params?: {
+    page?: number
+    limit?: number
+    sort_by?: string
+    search?: string
+    tag_ids?: string[]
+  }): Promise<any> {
+    try {
+      const queryParams = new URLSearchParams({ course_id: courseId })
+      if (params?.page) queryParams.append('page', params.page.toString())
+      if (params?.limit) queryParams.append('limit', params.limit.toString())
+      if (params?.sort_by) queryParams.append('sort_by', params.sort_by)
+      if (params?.search) queryParams.append('search', params.search)
+      if (params?.tag_ids) params.tag_ids.forEach(tagId => queryParams.append('tag_ids', tagId))
+
+      const query = queryParams.toString()
+      const url = `/discussions${query ? `?${query}` : ''}`
+      return await this.request(url)
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async getDiscussion(id: string, withReplies?: boolean): Promise<any> {
+    try {
+      const params = withReplies ? '?with_replies=true&max_depth=10' : ''
+      return await this.request(`/discussions/${id}${params}`)
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async createDiscussion(data: {
+    course_id: string
+    lesson_id?: string
+    title?: string
+    content: string
+    parent_id?: string
+    is_anonymous?: boolean
+    tag_ids?: string[]
+  }): Promise<any> {
+    try {
+      return await this.request('/discussions', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async updateDiscussion(id: string, data: {
+    title?: string
+    content?: string
+    is_resolved?: boolean
+    is_locked?: boolean
+    is_pinned?: boolean
+    tag_ids?: string[]
+  }): Promise<any> {
+    try {
+      return await this.request(`/discussions/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async deleteDiscussion(id: string): Promise<any> {
+    try {
+      return await this.request(`/discussions/${id}`, {
+        method: 'DELETE',
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async toggleLike(id: string, likeType: 'upvote' | 'downvote' = 'upvote'): Promise<any> {
+    try {
+      return await this.request(`/discussions/${id}/like?like_type=${likeType}`, {
+        method: 'POST',
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async toggleFavorite(id: string): Promise<any> {
+    try {
+      return await this.request(`/discussions/${id}/favorite`, {
+        method: 'POST',
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async resolveDiscussion(id: string): Promise<any> {
+    try {
+      return await this.request(`/discussions/${id}/resolve`, {
+        method: 'POST',
+      })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async getDiscussionTags(): Promise<any> {
+    try {
+      return await this.request('/discussions/tags')
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
+
+  async getHotDiscussions(courseId: string, limit?: number): Promise<any> {
+    try {
+      const params = limit ? `?limit=${limit}` : ''
+      return await this.request(`/discussions/hot?course_id=${courseId}${params}`)
+    } catch (error) {
+      if (error instanceof ApiError) {
+        return { success: false, error: error.message }
+      }
+      return { success: false, error: '网络错误，请稍后重试' }
+    }
+  }
 }
 
 export const api = new ApiService()

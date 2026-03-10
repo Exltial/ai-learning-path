@@ -123,21 +123,7 @@ type Progress struct {
 }
 
 // Achievement and UserAchievement are defined in achievement_models.go
-
-// Discussion represents a discussion thread
-type Discussion struct {
-	ID         uuid.UUID  `json:"id" db:"id"`
-	CourseID   uuid.UUID  `json:"course_id" db:"course_id"`
-	LessonID   *uuid.UUID `json:"lesson_id,omitempty" db:"lesson_id"`
-	UserID     uuid.UUID  `json:"user_id" db:"user_id"`
-	ParentID   *uuid.UUID `json:"parent_id,omitempty" db:"parent_id"`
-	Title      string     `json:"title,omitempty" db:"title"`
-	Content    string     `json:"content" db:"content"`
-	IsResolved bool       `json:"is_resolved" db:"is_resolved"`
-	Upvotes    int        `json:"upvotes" db:"upvotes"`
-	CreatedAt  time.Time  `json:"created_at" db:"created_at"`
-	UpdatedAt  time.Time  `json:"updated_at" db:"updated_at"`
-}
+// Discussion is defined in discussion_models.go
 
 // Notification represents a user notification
 type Notification struct {

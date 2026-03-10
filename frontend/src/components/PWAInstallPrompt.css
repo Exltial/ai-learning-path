@@ -1,0 +1,240 @@
+.pwa-install-prompt {
+  position: fixed;
+  bottom: calc(80px + env(safe-area-inset-bottom, 0));
+  left: 16px;
+  right: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+  z-index: 9999;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  animation: pwa-prompt-slide-up 0.3s ease-out;
+}
+
+@keyframes pwa-prompt-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pwa-install-prompt-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 16px 12px;
+  gap: 12px;
+}
+
+.pwa-install-prompt-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.pwa-install-prompt-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pwa-install-prompt-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  line-height: 1.4;
+}
+
+.pwa-install-prompt-description {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pwa-install-prompt-close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-install-prompt-close:hover {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.pwa-install-prompt-close:active {
+  transform: scale(0.95);
+}
+
+.pwa-install-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px 16px;
+}
+
+.pwa-install-prompt-btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-install-prompt-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+.pwa-install-prompt-btn:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+.pwa-install-prompt-dismiss {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 20px;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-install-prompt-dismiss:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.pwa-install-prompt-dismiss:active {
+  background: #f3f4f6;
+}
+
+.pwa-install-prompt-ios-instructions {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.pwa-install-prompt-ios-instructions p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin: 0 0 8px;
+}
+
+.pwa-install-prompt-ios-instructions ol {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.pwa-install-prompt-ios-instructions strong {
+  color: #4f46e5;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .pwa-install-prompt {
+    background: #1f2937;
+  }
+  
+  .pwa-install-prompt-title {
+    color: #f9fafb;
+  }
+  
+  .pwa-install-prompt-description {
+    color: #9ca3af;
+  }
+  
+  .pwa-install-prompt-close:hover {
+    background: #374151;
+    color: #d1d5db;
+  }
+  
+  .pwa-install-prompt-dismiss {
+    border-color: #374151;
+    color: #9ca3af;
+  }
+  
+  .pwa-install-prompt-dismiss:hover {
+    background: #374151;
+  }
+  
+  .pwa-install-prompt-ios-instructions {
+    background: #374151;
+  }
+  
+  .pwa-install-prompt-ios-instructions p {
+    color: #e5e7eb;
+  }
+  
+  .pwa-install-prompt-ios-instructions ol {
+    color: #9ca3af;
+  }
+}
+
+/* 横屏模式 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .pwa-install-prompt {
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 600px;
+  }
+  
+  .pwa-install-prompt-content {
+    padding: 12px;
+  }
+  
+  .pwa-install-prompt-actions {
+    padding: 0 12px 12px;
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .pwa-install-prompt {
+    animation: none;
+  }
+}

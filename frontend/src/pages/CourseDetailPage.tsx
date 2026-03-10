@@ -13,6 +13,7 @@ import {
   Video,
   FileText,
   HelpCircle,
+  MessageSquare,
 } from 'lucide-react'
 import CodeEditor from '@/components/CodeEditor'
 import ProgressBar from '@/components/ProgressBar'
@@ -254,10 +255,17 @@ export default function CourseDetailPage() {
               </div>
             )}
 
-            <button onClick={handleStartLearning} className="btn-primary w-full md:w-auto">
-              <Play className="h-5 w-5 mr-2" />
-              {progress > 0 ? '继续学习' : '开始学习'}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button onClick={handleStartLearning} className="btn-primary flex-1 sm:flex-none">
+                <Play className="h-5 w-5 mr-2" />
+                {progress > 0 ? '继续学习' : '开始学习'}
+              </button>
+              
+              <Link to={`/courses/${id}/discussions`} className="btn-secondary flex items-center justify-center">
+                <MessageSquare className="h-5 w-5 mr-2" />
+                课程讨论
+              </Link>
+            </div>
           </div>
         </div>
       </div>
