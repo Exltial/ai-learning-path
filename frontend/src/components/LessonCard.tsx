@@ -1,4 +1,4 @@
-import { CheckCircle, Circle, Lock, PlayCircle, Code, HelpCircle, Folder } from 'lucide-react'
+import { CheckCircle, Lock, PlayCircle, Code, HelpCircle, Folder } from 'lucide-react'
 
 export interface Lesson {
   id: string

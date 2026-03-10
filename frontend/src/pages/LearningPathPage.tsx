@@ -1,6 +1,6 @@
-import { BookOpen, Code, Database, Award, Clock, CheckCircle } from 'lucide-react'
+import { BookOpen, Code, Database, Award, Clock } from 'lucide-react'
 import ProgressBar from '@/components/ProgressBar'
-import CourseCard, { type Course } from '@/components/CourseCard'
+import CourseCard from '@/components/CourseCard'
 
 const learningPaths = [
   {

@@ -1,10 +1,14 @@
-import { Link, useLocation } from 'react-router-dom'
-import { BookOpen, Code, User, Home, Menu, X } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { BookOpen, Code, User, Home, Menu, X, LogOut, LogIn, UserPlus } from 'lucide-react'
 import { useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Header() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, isAuthenticated, logout } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   const navItems = [
     { path: '/', label: '首页', icon: Home },
@@ -18,6 +22,12 @@ export default function Header() {
       return location.pathname === '/'
     }
     return location.pathname.startsWith(path)
+  }
+
+  const handleLogout = () => {
+    logout()
+    setUserMenuOpen(false)
+    navigate('/')
   }
 
   return (
@@ -53,6 +63,68 @@ export default function Header() {
             })}
           </nav>
 
+          {/* Auth Buttons / User Menu */}
+          <div className="hidden md:flex items-center space-x-4">
+            {isAuthenticated && user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
+                >
+                  <div className="h-8 w-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                    <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                  </div>
+                  <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                    {user.username}
+                  </span>
+                </button>
+
+                {userMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setUserMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-secondary-800 rounded-lg shadow-lg py-1 z-20 border border-secondary-200 dark:border-secondary-700">
+                      <Link
+                        to="/profile"
+                        className="flex items-center px-4 py-2 text-sm text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <User className="h-4 w-4 mr-3" />
+                        个人中心
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      >
+                        <LogOut className="h-4 w-4 mr-3" />
+                        退出登录
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="flex items-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400"
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  登录
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  注册
+                </Link>
+              </>
+            )}
+          </div>
+
           {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-lg text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700"
@@ -84,6 +156,36 @@ export default function Header() {
                   </Link>
                 )
               })}
+
+              {/* Mobile Auth Buttons */}
+              {!isAuthenticated ? (
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center px-4 py-3 rounded-lg text-primary-600 hover:bg-primary-50 dark:text-primary-400 dark:hover:bg-primary-900/20 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <LogIn className="h-5 w-5 mr-3" />
+                    登录
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center px-4 py-3 rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <UserPlus className="h-5 w-5 mr-3" />
+                    注册
+                  </Link>
+                </>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
+                >
+                  <LogOut className="h-5 w-5 mr-3" />
+                  退出登录
+                </button>
+              )}
             </div>
           </nav>
         )}

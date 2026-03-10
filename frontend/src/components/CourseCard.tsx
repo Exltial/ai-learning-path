@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, Clock, Users, Star } from 'lucide-react'
+import { BookOpen, Clock, Star } from 'lucide-react'
 
 export interface Course {
   id: string

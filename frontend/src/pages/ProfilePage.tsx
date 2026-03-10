@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { User, Mail, Phone, MapPin, Award, BookOpen, Clock, Star, Settings, Bell, Shield } from 'lucide-react'
-import ProgressBar from '@/components/ProgressBar'
+import { User, Mail, Phone, MapPin, Award, BookOpen, Clock, Star, Settings, LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
+import LearningProgress from '@/components/LearningProgress'
 
 const userData = {
   name: '张三',
@@ -22,30 +24,6 @@ const learningStats = {
   averageRating: 4.7,
 }
 
-const recentCourses = [
-  {
-    id: '1',
-    title: 'React 前端开发',
-    progress: 65,
-    lastAccessed: '2 小时前',
-    thumbnail: 'https://picsum.photos/seed/react/400/200',
-  },
-  {
-    id: '2',
-    title: 'Python 编程基础',
-    progress: 80,
-    lastAccessed: '1 天前',
-    thumbnail: 'https://picsum.photos/seed/python/400/200',
-  },
-  {
-    id: '3',
-    title: 'TypeScript 进阶',
-    progress: 30,
-    lastAccessed: '3 天前',
-    thumbnail: 'https://picsum.photos/seed/ts/400/200',
-  },
-]
-
 const achievements = [
   { id: '1', title: '初学者', description: '完成第一门课程', icon: '🎯', unlocked: true },
   { id: '2', title: '持之以恒', description: '连续学习 7 天', icon: '🔥', unlocked: true },
@@ -55,7 +33,39 @@ const achievements = [
 ]
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<'profile' | 'settings'>('profile')
+  const navigate = useNavigate()
+  const { user, logout, isAuthenticated } = useAuth()
+  const [activeTab, setActiveTab] = useState<'profile' | 'achievements' | 'settings'>('profile')
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+
+  // If not authenticated, show login prompt
+  if (!isAuthenticated) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center py-12">
+          <User className="h-16 w-16 text-secondary-300 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-secondary-800 dark:text-white mb-4">
+            请先登录
+          </h2>
+          <p className="text-secondary-500 dark:text-secondary-400 mb-6">
+            登录后查看你的学习进度和个人信息
+          </p>
+          <div className="flex justify-center space-x-4">
+            <button onClick={() => navigate('/login')} className="btn-primary">
+              登录
+            </button>
+            <button onClick={() => navigate('/register')} className="btn-secondary">
+              注册
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -74,12 +84,12 @@ export default function ProfilePage() {
         <div className="lg:col-span-1">
           <div className="card text-center">
             <img
-              src={userData.avatar}
-              alt={userData.name}
+              src={user?.avatar || userData.avatar}
+              alt={user?.username || userData.name}
               className="h-32 w-32 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100 dark:border-primary-900"
             />
             <h2 className="text-xl font-bold text-secondary-800 dark:text-white">
-              {userData.name}
+              {user?.username || userData.name}
             </h2>
             <p className="text-primary-600 font-medium mb-2">{userData.level}</p>
             <p className="text-secondary-500 dark:text-secondary-400 text-sm mb-4">
@@ -93,9 +103,13 @@ export default function ProfilePage() {
               <div className="text-2xl font-bold text-primary-600">{userData.points}</div>
               <div className="text-sm text-secondary-500 dark:text-secondary-400">学习积分</div>
             </div>
-            <button className="btn-secondary w-full">
+            <button className="btn-secondary w-full mb-2">
               <Settings className="h-4 w-4 mr-2" />
               编辑资料
+            </button>
+            <button onClick={handleLogout} className="w-full py-2 px-4 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+              <LogOut className="h-4 w-4 mr-2 inline" />
+              退出登录
             </button>
           </div>
 
@@ -149,10 +163,10 @@ export default function ProfilePage() {
         <div className="lg:col-span-2">
           {/* Tabs */}
           <div className="mb-6 border-b border-secondary-200 dark:border-secondary-700">
-            <div className="flex space-x-8">
+            <div className="flex space-x-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('profile')}
-                className={`pb-4 font-medium transition-colors ${
+                className={`pb-4 font-medium transition-colors whitespace-nowrap ${
                   activeTab === 'profile'
                     ? 'text-primary-600 border-b-2 border-primary-600'
                     : 'text-secondary-500 hover:text-secondary-700 dark:text-secondary-400'
@@ -161,9 +175,9 @@ export default function ProfilePage() {
                 学习进度
               </button>
               <button
-                onClick={() => setActiveTab('settings')}
-                className={`pb-4 font-medium transition-colors ${
-                  activeTab === 'settings'
+                onClick={() => setActiveTab('achievements')}
+                className={`pb-4 font-medium transition-colors whitespace-nowrap ${
+                  activeTab === 'achievements'
                     ? 'text-primary-600 border-b-2 border-primary-600'
                     : 'text-secondary-500 hover:text-secondary-700 dark:text-secondary-400'
                 }`}
@@ -171,9 +185,9 @@ export default function ProfilePage() {
                 成就徽章
               </button>
               <button
-                onClick={() => setActiveTab('account')}
-                className={`pb-4 font-medium transition-colors ${
-                  activeTab === 'account'
+                onClick={() => setActiveTab('settings')}
+                className={`pb-4 font-medium transition-colors whitespace-nowrap ${
+                  activeTab === 'settings'
                     ? 'text-primary-600 border-b-2 border-primary-600'
                     : 'text-secondary-500 hover:text-secondary-700 dark:text-secondary-400'
                 }`}
@@ -185,40 +199,12 @@ export default function ProfilePage() {
 
           {/* Tab Content */}
           {activeTab === 'profile' && (
-            <div className="space-y-6">
-              <div className="card">
-                <h3 className="text-lg font-bold text-secondary-800 dark:text-white mb-4">
-                  正在学习
-                </h3>
-                <div className="space-y-4">
-                  {recentCourses.map((course) => (
-                    <div
-                      key={course.id}
-                      className="flex items-center space-x-4 p-4 bg-secondary-50 dark:bg-secondary-800 rounded-lg"
-                    >
-                      <img
-                        src={course.thumbnail}
-                        alt={course.title}
-                        className="h-16 w-24 object-cover rounded"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-medium text-secondary-800 dark:text-white mb-2">
-                          {course.title}
-                        </h4>
-                        <ProgressBar progress={course.progress} size="sm" />
-                        <p className="text-xs text-secondary-500 dark:text-secondary-400 mt-2">
-                          最后学习：{course.lastAccessed}
-                        </p>
-                      </div>
-                      <button className="btn-primary text-sm">继续</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div>
+              <LearningProgress />
             </div>
           )}
 
-          {activeTab === 'settings' && (
+          {activeTab === 'achievements' && (
             <div className="card">
               <h3 className="text-lg font-bold text-secondary-800 dark:text-white mb-6">
                 成就徽章
@@ -251,7 +237,7 @@ export default function ProfilePage() {
             </div>
           )}
 
-          {activeTab === 'account' && (
+          {activeTab === 'settings' && (
             <div className="card">
               <h3 className="text-lg font-bold text-secondary-800 dark:text-white mb-6">
                 账户信息
@@ -259,13 +245,16 @@ export default function ProfilePage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
-                    姓名
+                    用户名
                   </label>
-                  <input
-                    type="text"
-                    defaultValue={userData.name}
-                    className="w-full px-4 py-2 border border-secondary-300 dark:border-secondary-700 rounded-lg bg-white dark:bg-secondary-800 text-secondary-800 dark:text-white"
-                  />
+                  <div className="flex items-center">
+                    <User className="h-5 w-5 text-secondary-400 mr-2" />
+                    <input
+                      type="text"
+                      defaultValue={user?.username || userData.name}
+                      className="w-full px-4 py-2 border border-secondary-300 dark:border-secondary-700 rounded-lg bg-white dark:bg-secondary-800 text-secondary-800 dark:text-white"
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
@@ -275,7 +264,7 @@ export default function ProfilePage() {
                     <Mail className="h-5 w-5 text-secondary-400 mr-2" />
                     <input
                       type="email"
-                      defaultValue={userData.email}
+                      defaultValue={user?.email || userData.email}
                       className="w-full px-4 py-2 border border-secondary-300 dark:border-secondary-700 rounded-lg bg-white dark:bg-secondary-800 text-secondary-800 dark:text-white"
                     />
                   </div>
