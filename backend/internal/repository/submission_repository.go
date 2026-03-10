@@ -156,3 +156,43 @@ func (r *SubmissionRepository) GetLatestSubmission(ctx context.Context, exercise
 	}
 	return submission, nil
 }
+
+// GetByUserID retrieves all submissions for a user
+func (r *SubmissionRepository) GetByUserID(ctx context.Context, userID uuid.UUID) ([]*models.Submission, error) {
+	query := `
+		SELECT id, exercise_id, user_id, submission_type, answer, code, is_correct, score, 
+			feedback, attempt_number, submitted_at, graded_at, graded_by
+		FROM submissions WHERE user_id = $1 ORDER BY submitted_at DESC
+	`
+	rows, err := r.db.Query(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	submissions := make([]*models.Submission, 0)
+	for rows.Next() {
+		submission := &models.Submission{}
+		err := rows.Scan(
+			&submission.ID,
+			&submission.ExerciseID,
+			&submission.UserID,
+			&submission.SubmissionType,
+			&submission.Answer,
+			&submission.Code,
+			&submission.IsCorrect,
+			&submission.Score,
+			&submission.Feedback,
+			&submission.AttemptNumber,
+			&submission.SubmittedAt,
+			&submission.GradedAt,
+			&submission.GradedBy,
+		)
+		if err != nil {
+			return nil, err
+		}
+		submissions = append(submissions, submission)
+	}
+
+	return submissions, rows.Err()
+}

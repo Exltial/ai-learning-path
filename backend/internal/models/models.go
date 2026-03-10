@@ -89,6 +89,7 @@ type Enrollment struct {
 	CompletedAt      *time.Time `json:"completed_at,omitempty" db:"completed_at"`
 	Status           string     `json:"status" db:"status"` // active, completed, dropped
 	ProgressPercentage float64  `json:"progress_percentage" db:"progress_percentage"`
+	UpdatedAt        time.Time  `json:"updated_at" db:"updated_at"`
 }
 
 // Submission represents a user's submission for an exercise
@@ -121,25 +122,7 @@ type Progress struct {
 	CompletedAt     *time.Time `json:"completed_at,omitempty" db:"completed_at"`
 }
 
-// Achievement represents an achievement badge
-type Achievement struct {
-	ID              uuid.UUID              `json:"id" db:"id"`
-	Name            string                 `json:"name" db:"name"`
-	Description     string                 `json:"description" db:"description"`
-	IconURL         string                 `json:"icon_url,omitempty" db:"icon_url"`
-	Points          int                    `json:"points" db:"points"`
-	AchievementType string                 `json:"achievement_type" db:"achievement_type"` // general, course, streak, social
-	Criteria        map[string]interface{} `json:"criteria" db:"criteria"`
-	CreatedAt       time.Time              `json:"created_at" db:"created_at"`
-}
-
-// UserAchievement represents an achievement earned by a user
-type UserAchievement struct {
-	ID            uuid.UUID `json:"id" db:"id"`
-	UserID        uuid.UUID `json:"user_id" db:"user_id"`
-	AchievementID uuid.UUID `json:"achievement_id" db:"achievement_id"`
-	EarnedAt      time.Time `json:"earned_at" db:"earned_at"`
-}
+// Achievement and UserAchievement are defined in achievement_models.go
 
 // Discussion represents a discussion thread
 type Discussion struct {
