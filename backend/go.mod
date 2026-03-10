@@ -7,11 +7,13 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/uuid v1.5.0
 	github.com/jackc/pgx/v5 v5.5.1
+	github.com/lib/pq v1.11.2
 	github.com/redis/go-redis/v9 v9.3.1
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.2
+	github.com/yuin/goldmark v1.7.16
 	golang.org/x/crypto v0.28.0
 )
 
@@ -49,7 +51,6 @@ require (
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/yuin/goldmark v1.7.16 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
