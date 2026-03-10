@@ -14,7 +14,6 @@ import (
 
 // Error definitions for user service
 var (
-	ErrUserNotFound        = errors.New("user not found")
 	ErrInvalidPassword     = errors.New("invalid password")
 	ErrPasswordTooWeak     = errors.New("password too weak")
 	ErrUsernameUnavailable = errors.New("username unavailable")
@@ -144,7 +143,7 @@ func (s *UserService) GetUserStats(ctx context.Context, userID uuid.UUID) (map[s
 	// Get user's progress
 	progresses, err := s.progressRepo.GetByUserID(ctx, userID)
 	if err != nil {
-		progresses = []models.Progress{}
+		progresses = []*models.Progress{}
 	}
 
 	// Count completed lessons
@@ -266,6 +265,6 @@ func (s *UserService) GetUserEnrollments(ctx context.Context, userID uuid.UUID) 
 }
 
 // GetUserProgress retrieves learning progress for a user
-func (s *UserService) GetUserProgress(ctx context.Context, userID uuid.UUID) ([]models.Progress, error) {
+func (s *UserService) GetUserProgress(ctx context.Context, userID uuid.UUID) ([]*models.Progress, error) {
 	return s.progressRepo.GetByUserID(ctx, userID)
 }

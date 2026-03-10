@@ -171,3 +171,37 @@ func (r *ProgressRepository) UpdateVideoPosition(ctx context.Context, userID, le
 	_, err := r.db.Exec(ctx, query, userID, lessonID, position, time.Now())
 	return err
 }
+
+// GetByUserID retrieves all progress records for a user
+func (r *ProgressRepository) GetByUserID(ctx context.Context, userID uuid.UUID) ([]*models.Progress, error) {
+	query := `
+		SELECT id, user_id, lesson_id, is_completed, is_watching, video_position, completed_at, last_accessed_at
+		FROM progress WHERE user_id = $1
+		ORDER BY last_accessed_at DESC
+	`
+	rows, err := r.db.Query(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	progresses := make([]*models.Progress, 0)
+	for rows.Next() {
+		progress := &models.Progress{}
+		err := rows.Scan(
+			&progress.ID,
+			&progress.UserID,
+			&progress.LessonID,
+			&progress.IsCompleted,
+			&progress.IsWatching,
+			&progress.VideoPosition,
+			&progress.CompletedAt,
+			&progress.LastAccessedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		progresses = append(progresses, progress)
+	}
+	return progresses, rows.Err()
+}

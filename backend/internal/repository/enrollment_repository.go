@@ -187,3 +187,44 @@ func (r *EnrollmentRepository) Exists(ctx context.Context, userID, courseID uuid
 	err := r.db.QueryRow(ctx, query, userID, courseID).Scan(&exists)
 	return exists, err
 }
+
+// GetByUserID retrieves all enrollments for a user
+func (r *EnrollmentRepository) GetByUserID(ctx context.Context, userID uuid.UUID) ([]*models.Enrollment, error) {
+	query := `
+		SELECT id, user_id, course_id, enrolled_at, completed_at, status, progress_percentage
+		FROM enrollments WHERE user_id = $1
+		ORDER BY enrolled_at DESC
+	`
+	rows, err := r.db.Query(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	enrollments := make([]*models.Enrollment, 0)
+	for rows.Next() {
+		enrollment := &models.Enrollment{}
+		err := rows.Scan(
+			&enrollment.ID,
+			&enrollment.UserID,
+			&enrollment.CourseID,
+			&enrollment.EnrolledAt,
+			&enrollment.CompletedAt,
+			&enrollment.Status,
+			&enrollment.ProgressPercentage,
+		)
+		if err != nil {
+			return nil, err
+		}
+		enrollments = append(enrollments, enrollment)
+	}
+	return enrollments, rows.Err()
+}
+
+// CountByCourse counts enrollments for a course
+func (r *EnrollmentRepository) CountByCourse(ctx context.Context, courseID uuid.UUID) (int64, error) {
+	query := `SELECT COUNT(*) FROM enrollments WHERE course_id = $1`
+	var count int64
+	err := r.db.QueryRow(ctx, query, courseID).Scan(&count)
+	return count, err
+}

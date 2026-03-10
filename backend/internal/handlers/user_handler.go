@@ -72,8 +72,19 @@ func (h *UserHandler) GetCurrentUser(c *gin.Context) {
 
 // UpdateUser updates the current user's information
 func (h *UserHandler) UpdateUser(c *gin.Context) {
-	userIDStr, _ := c.Get("user_id")
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"success": false,
+			"error": map[string]interface{}{
+				"code":    "UNAUTHORIZED",
+				"message": "User ID not found",
+			},
+		})
+		return
+	}
 	userID, _ := uuid.Parse(userIDStr.(string))
+	_ = userID // Will be used when implementing actual update logic
 
 	var req struct {
 		Username  string `json:"username" binding:"omitempty,min=3,max=50"`
@@ -102,6 +113,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	userIDStr, _ := c.Get("user_id")
 	userID, _ := uuid.Parse(userIDStr.(string))
+	_ = userID // Will be used when implementing actual password change logic
 
 	var req struct {
 		CurrentPassword string `json:"current_password" binding:"required"`
@@ -128,7 +140,17 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 
 // GetUserStats retrieves statistics for the current user
 func (h *UserHandler) GetUserStats(c *gin.Context) {
-	userIDStr, _ := c.Get("user_id")
+	userIDStr, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"success": false,
+			"error": map[string]interface{}{
+				"code":    "UNAUTHORIZED",
+				"message": "User ID not found",
+			},
+		})
+		return
+	}
 	userID, _ := uuid.Parse(userIDStr.(string))
 
 	stats, err := h.userService.GetUserStats(c.Request.Context(), userID)

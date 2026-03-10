@@ -380,7 +380,7 @@ func (h *SubmissionHandler) GetMySubmissions(c *gin.Context) {
 		return
 	}
 	
-	userID, _ := uuid.Parse(userIDStr.(string))
+	_ = userIDStr // Will be used when implementing pagination/filtering
 
 	// TODO: Implement pagination and filtering
 	// For now, return placeholder

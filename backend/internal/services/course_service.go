@@ -310,7 +310,7 @@ func (s *CourseService) GetCourseStats(ctx context.Context, courseID uuid.UUID) 
 	// Get enrollment count
 	enrollmentCount, err := s.enrollmentRepo.CountByCourse(ctx, courseID)
 	if err != nil {
-		enrollmentCount = course.EnrollmentCount
+		enrollmentCount = int64(course.EnrollmentCount)
 	}
 
 	// Get lesson count

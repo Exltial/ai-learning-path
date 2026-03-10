@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -254,7 +253,7 @@ func main() {
 				exercises.PUT("/:exercise_id", middleware.RequireRole("instructor", "admin"), exerciseHandler.UpdateExercise)
 				exercises.DELETE("/:exercise_id", middleware.RequireRole("instructor", "admin"), exerciseHandler.DeleteExercise)
 				exercises.POST("/:exercise_id/submit", exerciseHandler.SubmitExercise)
-				exercises.GET("/:exercise_id/submissions", exerciseHandler.GetExerciseSubmissions)
+				// exercises.GET("/:exercise_id/submissions", exerciseHandler.GetExerciseSubmissions) // TODO: Implement
 			}
 
 			// Submission routes
@@ -265,10 +264,7 @@ func main() {
 			}
 
 			// Discussion routes (placeholder)
-			discussions := protected.Group("/discussions")
-			{
-				// TODO: Implement discussion handlers
-			}
+			_ = protected.Group("/discussions") // TODO: Implement discussion handlers
 
 			// Notification routes
 			notifications := protected.Group("/notifications")

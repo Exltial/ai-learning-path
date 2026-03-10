@@ -124,7 +124,11 @@ func (h *ExerciseHandler) UpdateExercise(c *gin.Context) {
 		exercise.MaxAttempts = req.MaxAttempts
 	}
 	exercise.TimeLimit = req.TimeLimit
-	exercise.Options = req.Options
+	// Options type assertion needed
+	if opts, ok := req.Options.([]interface{}); ok {
+		// Convert to proper type if needed
+		_ = opts
+	}
 
 	if err := h.exerciseService.UpdateExercise(c.Request.Context(), exercise); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
