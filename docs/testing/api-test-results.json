@@ -1,0 +1,390 @@
+{
+  "test_run": {
+    "timestamp": "2026-03-10T13:40:00Z",
+    "base_url": "http://localhost:8080",
+    "test_environment": {
+      "backend": "http://localhost:8080",
+      "frontend": "http://localhost:5173",
+      "sandbox": "http://localhost:8000"
+    },
+    "service_status": {
+      "backend": "unavailable",
+      "frontend": "unavailable",
+      "sandbox": "unavailable"
+    },
+    "total_tests": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 48,
+    "pass_rate": 0,
+    "status": "skipped",
+    "skip_reason": "Services not running - Backend port 8080 occupied by SearXNG, Go environment not installed"
+  },
+  "test_suites": [
+    {
+      "name": "Authentication API Tests",
+      "description": "用户认证相关 API 测试",
+      "total": 10,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 10,
+      "tests": [
+        {
+          "id": "TC-AUTH-001",
+          "name": "用户注册 - 正常流程",
+          "endpoint": "POST /api/v1/auth/register",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-002",
+          "name": "用户注册 - 用户名重复",
+          "endpoint": "POST /api/v1/auth/register",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 409,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-003",
+          "name": "用户注册 - 邮箱重复",
+          "endpoint": "POST /api/v1/auth/register",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 409,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-004",
+          "name": "用户注册 - 密码强度不足",
+          "endpoint": "POST /api/v1/auth/register",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 400,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-005",
+          "name": "用户注册 - 参数验证",
+          "endpoint": "POST /api/v1/auth/register",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 400,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-006",
+          "name": "用户登录 - 正常流程",
+          "endpoint": "POST /api/v1/auth/login",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-007",
+          "name": "用户登录 - 错误密码",
+          "endpoint": "POST /api/v1/auth/login",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 401,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-008",
+          "name": "用户登录 - 用户不存在",
+          "endpoint": "POST /api/v1/auth/login",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 404,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-009",
+          "name": "Token 刷新",
+          "endpoint": "POST /api/v1/auth/refresh",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-AUTH-010",
+          "name": "用户登出",
+          "endpoint": "POST /api/v1/auth/logout",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        }
+      ]
+    },
+    {
+      "name": "Courses API Tests",
+      "description": "课程管理相关 API 测试",
+      "total": 8,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 8,
+      "tests": [
+        {
+          "id": "TC-COURSE-001",
+          "name": "获取课程列表 - 正常查询",
+          "endpoint": "GET /api/v1/courses",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-002",
+          "name": "获取课程列表 - 分页",
+          "endpoint": "GET /api/v1/courses?page=1&limit=10",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-003",
+          "name": "获取课程列表 - 分类筛选",
+          "endpoint": "GET /api/v1/courses?category=Programming",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-004",
+          "name": "获取课程列表 - 难度筛选",
+          "endpoint": "GET /api/v1/courses?difficulty=beginner",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-005",
+          "name": "获取课程详情 - 正常查询",
+          "endpoint": "GET /api/v1/courses/:id",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-006",
+          "name": "获取课程详情 - 不存在",
+          "endpoint": "GET /api/v1/courses/invalid-id",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 404,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-007",
+          "name": "创建课程 - 讲师权限",
+          "endpoint": "POST /api/v1/courses",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-COURSE-008",
+          "name": "注册课程",
+          "endpoint": "POST /api/v1/courses/:id/enroll",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        }
+      ]
+    },
+    {
+      "name": "Exercise Submission API Tests",
+      "description": "作业提交相关 API 测试",
+      "total": 7,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 7,
+      "tests": [
+        {
+          "id": "TC-SUBMIT-001",
+          "name": "提交选择题 - 正确答案",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-002",
+          "name": "提交选择题 - 错误答案",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-003",
+          "name": "提交判断题",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-004",
+          "name": "提交填空题",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P0",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-005",
+          "name": "提交编程题",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 201,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-006",
+          "name": "达到最大尝试次数",
+          "endpoint": "POST /api/v1/exercises/:id/submit",
+          "status": "skipped",
+          "priority": "P1",
+          "expected_status": 400,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-SUBMIT-007",
+          "name": "获取提交历史",
+          "endpoint": "GET /api/v1/exercises/:id/submissions",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_status": 200,
+          "actual_status": null,
+          "skip_reason": "Service unavailable"
+        }
+      ]
+    },
+    {
+      "name": "Performance Tests",
+      "description": "性能测试 - 并发请求",
+      "total": 3,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 3,
+      "tests": [
+        {
+          "id": "TC-PERF-001",
+          "name": "课程列表并发请求 (10 并发)",
+          "endpoint": "GET /api/v1/courses",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_response_time_ms": 5000,
+          "actual_response_time_ms": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-PERF-002",
+          "name": "课程列表并发请求 (50 并发)",
+          "endpoint": "GET /api/v1/courses",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_response_time_ms": 10000,
+          "actual_response_time_ms": null,
+          "skip_reason": "Service unavailable"
+        },
+        {
+          "id": "TC-PERF-003",
+          "name": "登录接口并发请求 (20 并发)",
+          "endpoint": "POST /api/v1/auth/login",
+          "status": "skipped",
+          "priority": "P2",
+          "expected_response_time_ms": 8000,
+          "actual_response_time_ms": null,
+          "skip_reason": "Service unavailable"
+        }
+      ]
+    }
+  ],
+  "issues_found": [
+    {
+      "id": "BUG-001",
+      "title": "8080 端口被占用，后端服务无法启动",
+      "severity": "critical",
+      "status": "open",
+      "description": "端口 8080 被 SearXNG 服务占用"
+    },
+    {
+      "id": "BUG-002",
+      "title": "Go 运行环境未安装",
+      "severity": "critical",
+      "status": "open",
+      "description": "开发机器未安装 Go 1.21+"
+    },
+    {
+      "id": "BUG-003",
+      "title": "前端开发服务器未启动",
+      "severity": "high",
+      "status": "open",
+      "description": "Vite 开发服务器未运行"
+    },
+    {
+      "id": "BUG-004",
+      "title": "沙箱服务未部署",
+      "severity": "high",
+      "status": "open",
+      "description": "代码沙箱服务未部署"
+    }
+  ],
+  "recommendations": [
+    "停止 SearXNG 容器或修改后端服务端口",
+    "安装 Go 1.21+ 或使用 Docker 运行后端",
+    "启动前端开发服务器：npm run dev",
+    "部署沙箱服务：docker-compose up -d",
+    "准备测试数据（课程、练习题等）",
+    "创建测试账号用于自动化测试"
+  ],
+  "next_steps": [
+    "解决端口冲突问题",
+    "启动所有服务",
+    "重新运行测试脚本：./scripts/test-api.sh",
+    "执行前端功能测试",
+    "执行集成测试"
+  ]
+}
